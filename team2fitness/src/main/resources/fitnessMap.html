@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Google Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map;
+    var marker1;
+    var marker2;
+    var path;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: -43.522551, lng: 172.581065},
+            zoom: 16,
+            scaleControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+            mapTypeControl: false,
+            styles: [
+                {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+                {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+                {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+                {
+                    featureType: 'administrative.locality',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#d59563'}]
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#d59563'}]
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'geometry',
+                    stylers: [{color: '#263c3f'}]
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#6b9a76'}]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [{color: '#38414e'}]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry.stroke',
+                    stylers: [{color: '#212a37'}]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#9ca5b3'}]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry',
+                    stylers: [{color: '#746855'}]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry.stroke',
+                    stylers: [{color: '#1f2835'}]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#f3d19c'}]
+                },
+                {
+                    featureType: 'transit',
+                    elementType: 'geometry',
+                    stylers: [{color: '#2f3948'}]
+                },
+                {
+                    featureType: 'transit.station',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#d59563'}]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'geometry',
+                    stylers: [{color: '#17263c'}]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#515c6d'}]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.stroke',
+                    stylers: [{color: '#17263c'}]
+                }
+            ]
+        });
+    }
+
+    /**
+     * Takes a list of (lat, lng) points. Drops a marker on the location of the first and last point.
+     * Draws a polyline between these points, indicating a route.
+     * @param flightPath list of points outlining the route.
+     */
+    function displayRoute(flightPath) {
+        // Clears any existing markers
+        if (marker1 !== undefined && marker2 !== undefined && path !== undefined) {
+            marker1.setMap(null);
+            marker2.setMap(null);
+            path.setMap(null);
+        }
+
+        if (flightPath.length < 2) {
+            return;
+        }
+
+        // Marks the start and end of the route
+        marker1 = new google.maps.Marker({
+            position: flightPath[0],
+            map: map
+        });
+
+        marker2 = new google.maps.Marker({
+            position: flightPath[flightPath.length - 1],
+            map: map
+        });
+
+        // Draws the polyline indicating route
+        path = new google.maps.Polyline({
+            path: flightPath,
+            geodesic: true,
+            strokeColor: 'orange',
+
+            strokeOpacity: 1.0,
+            strokeWeight: 1.6
+        });
+
+        path.setMap(map);
+
+        repositionMap(flightPath);
+    }
+
+    /**
+     * Repositions the map so that the provided route is at the center.
+     * @param flightPath A list of points outlining the route the polyline models on the map.
+     */
+    function repositionMap(flightPath) {
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var i = 0; i < flightPath.length; i++) {
+            bounds.extend(flightPath[i]);
+        }
+
+        map.fitBounds(bounds);
+    }
+
+
+    /**
+     * Clears all existing markers from the map.
+     */
+    function clearRoute() {
+        // Clears any existing markers
+        if (marker1 !== undefined && marker2 !== undefined && path !== undefined) {
+            marker1.setMap(null);
+            marker2.setMap(null);
+            path.setMap(null);
+        }
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3bfC_qUCluh16vnRtDhw3j5UJnM5XeTY&callback=initMap"
+        async defer></script>
+</body>
+</html>

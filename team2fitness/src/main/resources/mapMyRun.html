@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Google Map</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 100%;
+        }
+    </style>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false&v=3&libraries=geometry"></script>
+
+</head>
+<body>
+<div id="map"></div>
+<script>
+
+    var map;
+    var polylinePath;
+
+    var totalDistance = 0.0;
+    var newDistance;
+    var start;
+    var finish;
+    var runPath = [];
+    var markersArray = [];
+    var polylineArray = [];
+
+    /**
+     * Initalises the Google Map in Webview. Adds a listener to the map for marker placement.
+     */
+    function initMap() {
+        var options = {
+            center: {lat: -43.522551, lng: 172.581065},
+            zoom: 16,
+            scaleControl: false,
+            zoomControl: false,
+            streetViewControl: false,
+            fullscreenControl: false,
+            scaleControl: false,
+            mapTypeControl: false,
+            styles: [
+                {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+                {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+                {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+                {
+                    featureType: 'administrative.locality',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#d59563'}]
+                },
+                {
+                    featureType: 'poi',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#d59563'}]
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'geometry',
+                    stylers: [{color: '#263c3f'}]
+                },
+                {
+                    featureType: 'poi.park',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#6b9a76'}]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry',
+                    stylers: [{color: '#38414e'}]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'geometry.stroke',
+                    stylers: [{color: '#212a37'}]
+                },
+                {
+                    featureType: 'road',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#9ca5b3'}]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry',
+                    stylers: [{color: '#746855'}]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'geometry.stroke',
+                    stylers: [{color: '#1f2835'}]
+                },
+                {
+                    featureType: 'road.highway',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#f3d19c'}]
+                },
+                {
+                    featureType: 'transit',
+                    elementType: 'geometry',
+                    stylers: [{color: '#2f3948'}]
+                },
+                {
+                    featureType: 'transit.station',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#d59563'}]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'geometry',
+                    stylers: [{color: '#17263c'}]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.fill',
+                    stylers: [{color: '#515c6d'}]
+                },
+                {
+                    featureType: 'water',
+                    elementType: 'labels.text.stroke',
+                    stylers: [{color: '#17263c'}]
+                }
+            ],
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+
+        map = new google.maps.Map(document.getElementById("map"), options);
+
+        google.maps.event.addListener(map, 'click', function(event) {
+            placeMarker(event.latLng);
+        });
+
+    }
+
+    /**
+     * Adds a marker to the map based on where the user clicked.
+     * Adds the marker to an array of markers.
+     * Calls the calculate route function to display a polyline of the user's selected route.
+     * @param location
+     */
+    function placeMarker(location) {
+        var marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+        runPath.push(location);
+        markersArray.push(marker);
+
+        calculateRoute(runPath);
+
+        map.setCenter(location);
+    }
+
+    /**
+     * Creates a polyline to display the route between all the user's markers.
+     * @param runPath An array of (lat,lng) points for the polyline to cover.
+     */
+    function calculateRoute(runPath) {
+
+        //Do nothing if two markers haven't yet been placed
+        if (runPath.length < 2) {
+            return;
+        }
+
+        polylinePath = new google.maps.Polyline({
+            path: runPath,
+            geodesic: true,
+            strokeColour: 'orange',
+
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+        });
+        polylineArray.push(polylinePath);
+        polylinePath.setOptions({strokeColor: '#f4aa42'});
+
+        polylinePath.setMap(map);
+        repositionMap(runPath);
+
+    }
+
+    /**
+     * Finds the total distance between all the points the user marks on the map.
+     * @returns {number} Total distance as double.
+     */
+    function calculateDistance() {
+        if (runPath.length > 1) {
+            start = runPath[runPath.length - 2];
+            finish = runPath[runPath.length - 1];
+            newDistance = google.maps.geometry.spherical.computeDistanceBetween(start, finish);
+            totalDistance = (parseFloat(totalDistance) + parseFloat(newDistance)).toFixed(1);
+            return totalDistance;
+        } else {
+            return 0.0;
+        }
+    }
+
+    /**
+     * Repositions the map view.
+     * @param flightPath The user's path.
+     */
+    function repositionMap(flightPath) {
+        var bounds = new google.maps.LatLngBounds();
+
+        for (var i = 0; i < flightPath.length; i++) {
+            bounds.extend(flightPath[i]);
+        }
+
+        map.fitBounds(bounds);
+    }
+
+    /**
+     * Clears the map of markers/polylines. Clears the marker and polyline array.
+     */
+    function clearMap() {
+        for (var i = 0 ; i < markersArray.length ; i++) {
+            markersArray[i].setMap(null);
+        }
+        for (var j = 0 ; j < polylineArray.length ; j++) {
+            polylineArray[j].setMap(null);
+        }
+        polylineArray = [];
+        markersArray = [];
+        runPath = [];
+
+        totalDistance = 0;
+        newDistance = 0;
+    }
+
+    /**
+     * Removes the last marker the user places, as well as the associated polyline.
+     * Recalculates total distance.
+     */
+    function undoMarker() {
+
+        if (runPath.length == 0 || runPath.length == 1 || runPath.length == 2) {
+            totalDistance = 0;
+        } else {
+            totalDistance -= newDistance;
+        }
+
+        if (markersArray.length > 0) {
+            markersArray[markersArray.length - 1].setMap(null);
+            markersArray.splice(-1,1);
+        }
+
+        if (polylineArray.length > 0) {
+            polylineArray[polylineArray.length - 1].setMap(null);
+            polylineArray.splice(-1,1);
+        }
+
+        if (runPath.length > 0) {
+            runPath.splice(-1,1);
+        }
+
+    }
+
+    function getRoute() {
+        return runPath;
+    }
+
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA3bfC_qUCluh16vnRtDhw3j5UJnM5XeTY&callback=initMap"
+        async defer></script>
+</body>
+</html>

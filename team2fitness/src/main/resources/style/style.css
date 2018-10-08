@@ -1,0 +1,277 @@
+@font-face {
+    src: url("fonts/Fran.ttf");
+}
+
+.navbar {
+    -fx-background-color: #2d3035;
+}
+
+.navbar Button {
+    -fx-text-fill: White;
+    -fx-background-color: transparent;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.navbar Button:hover {
+    -fx-text-fill: orange;
+    -fx-font-size: 15px;
+}
+
+.navbar-header {
+    -fx-background-color: #36393f;
+}
+
+.main {
+    -fx-background-color: #eaeaea;
+}
+
+.main-panel {
+    -fx-background-color: white;
+    -fx-border-color: #d8d8d8;
+}
+
+.panel-header Label {
+    -fx-text-fill: black;
+}
+
+/*.main-panel Label {*/
+    /*-fx-text-fill: #67B5E3*/
+    /*!*-fx-text-fill: #ea9c3c;*!*/
+    /*-fx-text-fill: linear-gradient(to left, #4b5360 ,#36393f);*/
+    /*-fx-font-family: "Francois One";*/
+    /*-fx-font-size: 20;*/
+/*}*/
+
+.customHeading {
+    -fx-text-fill: linear-gradient(to left, #4b5360 ,#36393f);
+    -fx-font-family: "Francois One";
+    -fx-font-size: 26;
+}
+
+.customLabels {
+    -fx-text-fill: linear-gradient(to left, #4b5360 ,#36393f);
+    -fx-font-family: "Francois One";
+    -fx-font-size: 16;
+}
+
+.customAccent {
+    /*-fx-text-fill: #6dd8db;*/
+    -fx-text-fill: #2d3035;
+    -fx-font-family: "Francois One";
+    -fx-font-size: 30;
+}
+
+.customButton {
+    -fx-background-color: linear-gradient(to right, #4b5360 ,#36393f);
+    -fx-background-size: 100% 100%;
+    -fx-border-width: 3px;
+    -fx-text-fill: white;
+    -fx-font-family: "Open Sans";
+    -fx-cursor: hand;
+
+}
+
+.customGreenButton{
+    -fx-background-color: linear-gradient(to right, #53604b ,#4b5e60);
+    -fx-background-size: 100% 100%;
+    -fx-border-width: 3px;
+    -fx-text-fill: white;
+    -fx-font-family: "Open Sans";
+    -fx-cursor: hand;
+
+}
+
+.customRedButton {
+    -fx-background-color: linear-gradient(to right, #604B53 ,#4e4b60);
+    -fx-background-size: 100% 100%;
+    -fx-border-width: 3px;
+    -fx-text-fill: white;
+    -fx-font-family: "Open Sans";
+    -fx-cursor: hand;
+
+}
+
+.customTable {
+    -fx-background-color: white;
+    -fx-font-family: "Francois One";
+    -fx-text-fill: #4b5360;
+    -fx-table-cell-border-color: transparent;
+}
+
+.noHeader {
+    -fx-max-height: 0;
+    -fx-pref-height: 0;
+    -fx-min-height: 0;
+}
+
+
+.invalidField {
+    -fx-border-width: 2px;
+    -fx-border-color: red;
+    -fx-border-radius: 3px;
+}
+
+.validField {
+    -fx-border-width: 2px;
+    -fx-border-color: green;
+    -fx-border-radius: 3px;
+}
+
+.error-msg {
+    -fx-font-family: "Francois One";
+    -fx-text-fill: #f00;
+}
+
+.login .table-view .column-header .label {
+    -fx-font-family: 'Francois One';
+    -fx-text-fill: white;
+}
+
+
+/*Disables scroll bars for login table views.*/
+.table-view *.scroll-bar:horizontal *.increment-button,
+.table-view *.scroll-bar:horizontal *.decrement-button {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.table-view *.scroll-bar:horizontal *.increment-arrow,
+.table-view *.scroll-bar:horizontal *.decrement-arrow {
+    -fx-background-color: null;
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-shape: null;
+}
+
+
+.main-panel Button {
+    /*-fx-cursor: hand;*/
+}
+
+.main .table-view .column-header .label,
+.table-view .column-header,
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, #4b5360 ,#36393f);
+    -fx-font-family: "Open Sans";
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-style: normal;
+}
+
+.main-popup {
+    -fx-background-color: white;
+    -fx-border-color: #d8d8d8;
+}
+
+.header {
+    /*-fx-background-color: #36393f;*/
+    -fx-background-color: white;
+    -fx-border-style: solid hidden solid hidden;
+    -fx-border-color: #d8d8d8;
+}
+
+.header-login {
+    -fx-background-color: #36393f;
+}
+
+.pingu {
+    -fx-background-image: url("../images/meme.jpg");
+    -fx-background-size: 1200 650;
+    -fx-background-repeat: stretch;
+}
+
+.login {
+    -fx-background-color: #d8d8d8;
+    -fx-text-fill: blue;
+}
+
+/*.login Button:hover {
+    -fx-background-color: #7ec9f7;
+    -fx-background-size: 100% 100%;
+    -fx-background-radius : 30;
+    -fx-border-width: 3px;
+    -fx-border-radius : 30;
+    -fx-text-fill: black;
+    -fx-border-color: #36393f;
+    -fx-font-family: "Open Sans";
+}*/
+
+
+
+/*.login .table-view {
+    -fx-background-color: transparent;
+
+}
+!*
+.login .table-row-cell {
+    -fx-cell-size: 40;
+    -fx-background-color: white;
+
+}*!*/
+
+.app {
+    -fx-border-style: solid;
+    -fx-border-color: #d8d8d8;
+}
+
+.dragStyle {
+    -fx-border-width: 4px;
+    -fx-border-style: dashed;
+    -fx-border-color: black;
+    -fx-border-radius: 5px;
+}
+
+
+.chart-title {
+    -fx-text-fill: black;
+}
+
+.chart-legend {
+    -fx-text-fill: black;
+}
+
+.bottom-border {
+    -fx-border-width: 0 0 10 0;
+    -fx-border-style: hidden hidden solid hidden;
+    -fx-border-color: black;
+}
+
+.infobg {
+    -fx-background-color: #4f545c;
+}
+
+.curve{
+    -fx-background-color: #2d3035;
+    -fx-background-size: 100% 100%;
+    -fx-background-radius : 30;
+    -fx-border-width: 3px;
+    -fx-border-radius : 30;
+    -fx-text-fill: white;
+    -fx-border-color: #4dd9da;
+}
+
+.dialog-pane,
+.dialog-pane .label,
+.dialog-pane:header .header-panel .label{
+    -fx-background-color: #36393f;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.dialog-pane .button-ok{
+    -fx-background-color: linear-gradient(to right, #604B53 ,#4e4b60);
+    -fx-background-size: 100% 100%;
+    -fx-border-width: 3px;
+    -fx-text-fill: white;
+    -fx-font-family: "Open Sans";
+    -fx-cursor: hand;
+
+}
+
+
+.default-color0.chart-bar { -fx-background-color: orange; }
